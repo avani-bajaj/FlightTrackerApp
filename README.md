@@ -12,9 +12,9 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 - **Flask fallback** – A lighter web UI lives in `app.py` if you need a classic server-rendered experience.
 
 ## Project Layout
-- `app_avani_v1.py` – Streamlit application that powers the AirScout chat experience (recommended entry point for Streamlit Community Cloud).
-- `app.py` – Flask prototype with similar Amadeus slot-filling logic.
-- `Appendix/` – Earlier app iterations kept for reference.
+- `app.py` – Streamlit application that powers the AirScout chat experience (entry point for Streamlit Community Cloud).
+- `Appendix/app.py` – Original Flask prototype with similar Amadeus slot-filling logic.
+- `Appendix/` – Earlier Streamlit/Flask iterations (`app_avani_v1_*`, `app_final.py`, etc.) kept for reference.
 - `requirements.txt` – Python dependencies for Streamlit Cloud or local installs.
 - `static/` – Placeholder assets.
 
@@ -40,7 +40,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
    ```
 4. **Run Streamlit**  
    ```bash
-   streamlit run app_avani_v1.py
+   streamlit run app.py
    ```
    The app launches at `http://localhost:8501`.
 
@@ -51,7 +51,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 
 ## Deploying to Streamlit Community Cloud
 1. Push changes to GitHub (already set up for `avani-bajaj/FlightTrackerApp`).
-2. In Streamlit Cloud, choose “New app” → select the repo and `main` branch → set the entry point to `app_avani_v1.py`.
+2. In Streamlit Cloud, choose “New app” → select the repo and `main` branch → set the entry point to `app.py`.
 3. Configure `AMADEUS_CLIENT_ID`, `AMADEUS_CLIENT_SECRET`, `OLLAMA_URL`, and `OLLAMA_MODEL` as **Secrets** in the Streamlit Cloud workspace.
 4. Deploy. Streamlit Cloud automatically installs `requirements.txt` and runs the entrypoint on each push.
 
@@ -59,7 +59,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 ```bash
 export AMADEUS_CLIENT_ID=...
 export AMADEUS_CLIENT_SECRET=...
-flask --app app run
+flask --app Appendix.app run
 ```
 This serves a lighter HTML chatbot (no Streamlit UI). Use it if you prefer classic server-side rendering.
 
