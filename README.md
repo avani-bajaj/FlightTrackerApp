@@ -9,12 +9,11 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 - **LLM tone + extraction** – Uses Ollama locally to rephrase responses and help interpret free-form text.
 - **Voice I/O** – Optional microphone capture + Faster-Whisper transcription and gTTS playback for each assistant reply.
 - **Rich UI polish** – Custom CSS, dark/light toggle, suggestion chips, and audio controls for every message bubble.
-- **Flask fallback** – A lighter web UI lives in `app.py` if you need a classic server-rendered experience.
+- **Archived prototypes** – Earlier experiments live in `Appendix/` for reference.
 
 ## Project Layout
 - `app.py` – Streamlit application that powers the AirScout chat experience (entry point for Streamlit Community Cloud).
-- `Appendix/app.py` – Original Flask prototype with similar Amadeus slot-filling logic.
-- `Appendix/` – Earlier Streamlit/Flask iterations (`app_avani_v1_*`, `app_final.py`, etc.) kept for reference.
+- `Appendix/` – Earlier iterations (`app_avani_v1_*`, `app_final.py`, etc.) kept for reference.
 - `requirements.txt` – Python dependencies for Streamlit Cloud or local installs.
 - `static/` – Placeholder assets.
 
@@ -54,14 +53,6 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 2. In Streamlit Cloud, choose “New app” → select the repo and `main` branch → set the entry point to `app.py`.
 3. Configure `AMADEUS_CLIENT_ID`, `AMADEUS_CLIENT_SECRET`, `OLLAMA_URL`, and `OLLAMA_MODEL` as **Secrets** in the Streamlit Cloud workspace.
 4. Deploy. Streamlit Cloud automatically installs `requirements.txt` and runs the entrypoint on each push.
-
-## Running the Flask Prototype
-```bash
-export AMADEUS_CLIENT_ID=...
-export AMADEUS_CLIENT_SECRET=...
-flask --app Appendix.app run
-```
-This serves a lighter HTML chatbot (no Streamlit UI). Use it if you prefer classic server-side rendering.
 
 ## Troubleshooting
 - **Amadeus auth errors** – Confirm credentials and that you are still using the test environment (calls are limited).
