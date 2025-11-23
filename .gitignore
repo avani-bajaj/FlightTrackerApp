@@ -1,0 +1,7 @@
+__pycache__/
+.env
+.git2/
+server.log
+server.pid
+*.dmg
+app_final (1).py
