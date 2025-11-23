@@ -44,7 +44,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
    The app launches at `http://localhost:8501`.
 
 ### Audio/LLM Prerequisites
-- **Speech-to-text**: Requires a working microphone plus `faster-whisper` (already listed) and its dependencies. On macOS, install PortAudio for PyAudio: `brew install portaudio`.
+- **Speech-to-text**: Requires a working microphone plus `faster-whisper` (already listed) and `sounddevice`. On macOS/Linux, make sure PortAudio libraries are installed (e.g., `brew install portaudio`).
 - **Text-to-speech**: gTTS needs outbound network once to hit Google’s TTS endpoint.
 - **Ollama**: Install Ollama locally and pull the configured model (`ollama pull gemma3:1b`) or update `OLLAMA_MODEL` to one you already have.
 
@@ -66,7 +66,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 
 ## Troubleshooting
 - **Amadeus auth errors** – Confirm credentials and that you are still using the test environment (calls are limited).
-- **Audio capture failures** – Ensure PyAudio detected your input device; on macOS allow microphone access in System Settings.
+- **Audio capture failures** – Ensure your OS grants microphone access and that PortAudio/sounddevice detect an input device.
 - **Ollama timeouts** – If the Ollama host isn’t reachable/slow, AirScout falls back to structured summaries automatically.
 
 Feel free to file issues or submit PRs with improvements, new cities, or better UI polish. Happy flying! ✈️
