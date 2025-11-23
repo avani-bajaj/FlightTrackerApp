@@ -44,7 +44,7 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
    The app launches at `http://localhost:8501`.
 
 ### Audio/LLM Prerequisites
-- **Speech-to-text**: Requires a working microphone plus `faster-whisper` (already listed) and `sounddevice`. On macOS/Linux, make sure PortAudio libraries are installed (e.g., `brew install portaudio`).
+- **Speech-to-text (optional)**: Install the `sounddevice` package manually (`pip install sounddevice`) and ensure PortAudio libs exist (e.g., `brew install portaudio`). This stack is omitted from Streamlit Cloud builds, so the microphone toggle stays disabled there.
 - **Text-to-speech**: gTTS needs outbound network once to hit Google’s TTS endpoint.
 - **Ollama**: Install Ollama locally and pull the configured model (`ollama pull gemma3:1b`) or update `OLLAMA_MODEL` to one you already have.
 

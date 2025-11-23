@@ -12,7 +12,6 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import requests
 import scipy.io.wavfile as wavfile
-import sounddevice as sd
 import streamlit as st
 from dotenv import find_dotenv, load_dotenv
 from gtts import gTTS
@@ -32,6 +31,15 @@ except Exception as exc:
     WhisperModel = None  # type: ignore
     _WHISPER_AVAILABLE = False
     _WHISPER_IMPORT_ERROR = str(exc)
+
+try:
+    import sounddevice as sd  # type: ignore
+    _AUDIO_CAPTURE_AVAILABLE = True
+    _AUDIO_CAPTURE_IMPORT_ERROR = ""
+except Exception as exc:
+    sd = None  # type: ignore
+    _AUDIO_CAPTURE_AVAILABLE = False
+    _AUDIO_CAPTURE_IMPORT_ERROR = str(exc)
 
 # ---------------------------------------------------------------------------
 # Amadeus config + domain data
@@ -750,6 +758,16 @@ def load_whisper_model() -> WhisperModel | None:
 
 def speech_to_text() -> str | None:
     """Capture microphone audio, transcribe via Faster-Whisper, and return text."""
+    if not _AUDIO_CAPTURE_AVAILABLE or sd is None:
+        message = (
+            "Speech-to-text is unavailable because the optional sounddevice/PortAudio "
+            "stack isn't installed in this environment."
+        )
+        if _AUDIO_CAPTURE_IMPORT_ERROR:
+            message += f" Details: {_AUDIO_CAPTURE_IMPORT_ERROR}"
+        st.warning(message)
+        return None
+
     whisper_model = load_whisper_model()
     if whisper_model is None:
         if _WHISPER_AVAILABLE:
@@ -1580,18 +1598,24 @@ with input_cols[0]:
         on_change=submit_text_from_box,
     )
 
-with input_cols[1]:
-    if st.button("🎤", key="mic_button", help="Speech-to-Text"):
-        if not _WHISPER_AVAILABLE:
-            st.warning(
-                "Speech-to-text requires faster-whisper + torch in this Python environment."
-            )
-        else:
-            voice_text = speech_to_text()
-            if voice_text:
-                st.session_state.prefill_chat_text = voice_text
-                st.session_state.pop("reset_chat_text", None)
-                st.rerun()
+    with input_cols[1]:
+        mic_disabled = not _AUDIO_CAPTURE_AVAILABLE
+        mic_help = "Speech-to-Text (requires local sounddevice/PortAudio support)."
+        if not _AUDIO_CAPTURE_AVAILABLE and _AUDIO_CAPTURE_IMPORT_ERROR:
+            mic_help += f" ({_AUDIO_CAPTURE_IMPORT_ERROR})"
+        if st.button("🎤", key="mic_button", help=mic_help, disabled=mic_disabled):
+            if not _WHISPER_AVAILABLE:
+                st.warning(
+                    "Speech-to-text requires faster-whisper + torch in this Python environment."
+                )
+            else:
+                voice_text = speech_to_text()
+                if voice_text:
+                    st.session_state.prefill_chat_text = voice_text
+                    st.session_state.pop("reset_chat_text", None)
+                    st.rerun()
+        if mic_disabled:
+            st.caption("Microphone capture disabled in this deployment.")
 
 with input_cols[2]:
     col_send, col_clear = st.columns([2, 1])
