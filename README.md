@@ -48,6 +48,16 @@ It gathers your origin, destination, budget, dates, and stop preferences, then s
 - **Text-to-speech**: gTTS needs outbound network once to hit Google’s TTS endpoint.
 - **Ollama**: Install Ollama locally and pull the configured model (`ollama pull gemma3:1b`) or update `OLLAMA_MODEL` to one you already have.
 
+#### Ollama Setup
+1. Install Ollama from https://ollama.com/download (macOS/Linux) and ensure the `ollama` CLI is on your `PATH`.
+2. Start the Ollama background service (`ollama serve`) if it isn’t already running.
+3. Pull the model used by AirScout:
+   ```bash
+   ollama pull gemma3:1b
+   ```
+4. Optionally, set `OLLAMA_URL` and `OLLAMA_MODEL` in your environment if you’re hosting Ollama remotely or prefer a different model.
+5. Run `ollama list` to confirm the model is available before launching Streamlit.
+
 ## Deploying to Streamlit Community Cloud
 1. Push changes to GitHub (already set up for `avani-bajaj/FlightTrackerApp`).
 2. In Streamlit Cloud, choose “New app” → select the repo and `main` branch → set the entry point to `app.py`.
